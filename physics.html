@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Physics & Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --ink: oklch(0.18 0.01 250);
+  --ink-soft: oklch(0.38 0.01 250);
+  --ink-faint: oklch(0.55 0.005 250);
+  --paper: oklch(0.985 0.003 250);
+  --paper-2: oklch(0.965 0.005 250);
+  --rule: oklch(0.88 0.01 250);
+  --rule-strong: oklch(0.78 0.01 250);
+  --accent: oklch(0.50 0.10 250);
+  --accent-soft: oklch(0.92 0.04 250);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+}
+
+/* topbar */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: oklch(0.985 0.003 250 / 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 40px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+}
+.topbar a { color: var(--ink-soft); text-decoration: none; }
+.topbar a:hover { color: var(--ink); }
+.crumbs { display: flex; gap: 10px; align-items: center; }
+.crumbs .sep { color: var(--ink-faint); }
+
+/* hero */
+.hero {
+  max-width: 1180px; margin: 0 auto; padding: 80px 40px 56px;
+  display: grid; grid-template-columns: 1fr 360px; gap: 64px;
+  align-items: end;
+  border-bottom: 1px solid var(--rule);
+}
+@media (max-width: 880px) { .hero { grid-template-columns: 1fr; } }
+.hero .eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-family: "Newsreader", serif;
+  font-weight: 400;
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  margin: 0 0 22px;
+  text-wrap: balance;
+}
+.hero h1 em { font-style: italic; color: var(--ink-soft); }
+.hero p {
+  font-size: 17px; line-height: 1.6; color: var(--ink-soft);
+  max-width: 60ch; margin: 0;
+  text-wrap: pretty;
+}
+
+/* ascii diagram in hero corner */
+.hero-side {
+  border: 1px solid var(--rule);
+  background: var(--paper-2);
+  padding: 18px 20px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  border-radius: 2px;
+}
+.hero-side .h {
+  text-transform: uppercase; letter-spacing: 0.18em;
+  font-size: 10px; color: var(--accent); margin-bottom: 10px;
+}
+.hero-side dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; }
+.hero-side dt { color: var(--ink-faint); }
+.hero-side dd { margin: 0; color: var(--ink); }
+
+/* section heading */
+.section {
+  max-width: 1180px; margin: 0 auto; padding: 72px 40px;
+  border-bottom: 1px solid var(--rule);
+}
+.section-head {
+  display: grid; grid-template-columns: 200px 1fr; gap: 40px;
+  margin-bottom: 40px;
+  align-items: baseline;
+}
+@media (max-width: 880px) { .section-head { grid-template-columns: 1fr; gap: 6px; } }
+.section-head .label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.section-head h2 {
+  font-family: "Newsreader", serif;
+  font-weight: 400;
+  font-size: 32px; letter-spacing: -0.01em;
+  margin: 0;
+}
+
+/* projects */
+.projects { display: grid; gap: 1px; background: var(--rule); border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; }
+.project {
+  background: var(--paper); padding: 32px;
+  display: grid; grid-template-columns: 1fr 280px; gap: 36px;
+  align-items: start;
+  transition: background 0.2s ease;
+}
+.project:hover { background: var(--paper-2); }
+@media (max-width: 880px) { .project { grid-template-columns: 1fr; } }
+.project .status {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  background: var(--accent-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+  margin-bottom: 16px;
+}
+.project .status .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+}
+.project h3 {
+  font-family: "Newsreader", serif;
+  font-weight: 500;
+  font-size: 26px;
+  margin: 0 0 4px;
+  letter-spacing: -0.005em;
+}
+.project .repo {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-bottom: 16px;
+}
+.project .repo a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px dotted var(--ink-faint); }
+.project .repo a:hover { color: var(--accent); }
+.project p {
+  font-size: 15px; line-height: 1.6; color: var(--ink-soft);
+  margin: 0 0 18px; max-width: 60ch;
+}
+.project .meta-tags {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.project .meta-tags span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 3px 8px;
+  border: 1px solid var(--rule-strong);
+  color: var(--ink-soft);
+  border-radius: 2px;
+}
+
+/* schematic side */
+.schematic {
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 16px;
+  background: var(--paper-2);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.schematic .cap { color: var(--ink-faint); margin-bottom: 8px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; }
+.schematic svg { display: block; width: 100%; height: 130px; }
+
+/* now-block */
+.now {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+@media (max-width: 880px) { .now { grid-template-columns: 1fr; } }
+.now > div { padding: 28px 32px; }
+.now > div + div { border-left: 1px solid var(--rule); }
+@media (max-width: 880px) {
+  .now > div + div { border-left: 0; border-top: 1px solid var(--rule); }
+}
+.now h4 {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 14px;
+}
+.now ul { margin: 0; padding: 0; list-style: none; }
+.now li {
+  font-size: 14px; line-height: 1.55;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--rule);
+  display: grid; grid-template-columns: 90px 1fr; gap: 14px;
+}
+.now li:last-child { border-bottom: 0; }
+.now li time {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+/* footer */
+.footer {
+  max-width: 1180px; margin: 0 auto; padding: 32px 40px;
+  display: flex; justify-content: space-between;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px; color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+
+/* equation block */
+.eq {
+  font-family: "Newsreader", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink-soft);
+  padding: 14px 18px;
+  border-left: 2px solid var(--accent);
+  background: var(--accent-soft);
+  margin: 16px 0 0;
+  display: inline-block;
+}
+.eq .var { font-family: "Newsreader", serif; }
+.eq sub, .eq sup { font-size: 0.7em; }
+</style>
+</head>
+<body>
+<nav class="topbar">
+  <div class="crumbs">
+    <a href="index.html">~/m-lopp</a>
+    <span class="sep">/</span>
+    <a href="physics.html" style="color: var(--ink);">physics</a>
+  </div>
+  <div class="crumbs">
+    <a href="rpg.html">→ fantasy & rpg</a>
+    <span class="sep">·</span>
+    <a href="https://github.com/" target="_blank">github ↗</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">/01 · plasma · simulation · engineering</div>
+    <h1>Computational physics, <em>handled with care.</em></h1>
+    <p>Side-projects in numerical plasma physics, scientific computing, and engineering tooling — written in evenings, polished slowly, shipped when ready. This shelf will hold the work I'm comfortable signing my name to.</p>
+  </div>
+  <aside class="hero-side">
+    <div class="h">// shelf info</div>
+    <dl>
+      <dt>focus</dt><dd>PIC / DSMC, MHD, CAE</dd>
+      <dt>langs</dt><dd>Fortran · C++ · Python</dd>
+      <dt>os</dt><dd>Linux primary · Windows port</dd>
+      <dt>build</dt><dd>CMake · MPI · OpenMP</dd>
+      <dt>status</dt><dd>active, low cadence</dd>
+    </dl>
+  </aside>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div class="label">02 / projects</div>
+    <h2>What's on the workbench.</h2>
+  </div>
+
+  <div class="projects">
+    <article class="project">
+      <div>
+        <div class="status"><span class="dot"></span> in progress · pre-release</div>
+        <h3>PICLas — unofficial Windows port</h3>
+        <div class="repo">github.com/&lt;handle&gt;/<a href="#">piclas-windows</a></div>
+        <p>An unofficial Windows build of the open-source <strong>PICLas</strong> framework — a parallel particle-in-cell / DSMC code for simulation of rarefied non-equilibrium plasma flows. The upstream project targets Linux / HPC; this port aims to make local exploration on Windows workstations practical for students and engineers.</p>
+        <div class="eq">∂f/∂t + <span class="var">v</span>·∇f + (q/m)(<span class="var">E</span> + <span class="var">v</span>×<span class="var">B</span>)·∇<sub>v</sub>f = (∂f/∂t)<sub>coll</sub></div>
+        <div class="meta-tags" style="margin-top: 18px;">
+          <span>fortran</span><span>MPI</span><span>cmake</span><span>windows</span><span>PIC-DSMC</span>
+        </div>
+      </div>
+      <div class="schematic">
+        <div class="cap">// build pipeline (planned)</div>
+        <svg viewBox="0 0 280 130" preserveAspectRatio="xMidYMid meet">
+          <g fill="none" stroke="oklch(0.50 0.10 250)" strokeWidth="1">
+            <rect x="6" y="20" width="58" height="28" rx="2"/>
+            <rect x="92" y="20" width="58" height="28" rx="2"/>
+            <rect x="178" y="20" width="58" height="28" rx="2"/>
+            <rect x="50" y="80" width="58" height="28" rx="2"/>
+            <rect x="136" y="80" width="58" height="28" rx="2"/>
+            <line x1="64" y1="34" x2="92" y2="34" markerEnd="url(#a)"/>
+            <line x1="150" y1="34" x2="178" y2="34" markerEnd="url(#a)"/>
+            <line x1="121" y1="48" x2="79" y2="80" markerEnd="url(#a)"/>
+            <line x1="207" y1="48" x2="165" y2="80" markerEnd="url(#a)"/>
+            <line x1="108" y1="94" x2="136" y2="94" markerEnd="url(#a)"/>
+          </g>
+          <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="oklch(0.50 0.10 250)"/></marker></defs>
+          <g font-family="JetBrains Mono, monospace" font-size="8" fill="oklch(0.32 0.01 250)" textAnchor="middle">
+            <text x="35" y="38">src/</text>
+            <text x="121" y="38">cmake</text>
+            <text x="207" y="38">MSVC</text>
+            <text x="79" y="98">tests</text>
+            <text x="165" y="98">piclas.exe</text>
+          </g>
+        </svg>
+      </div>
+    </article>
+
+    <article class="project">
+      <div>
+        <div class="status" style="background: oklch(0.94 0.005 250); color: var(--ink-faint);"><span class="dot" style="background: var(--ink-faint);"></span> on the shelf</div>
+        <h3>Notes & numerical experiments</h3>
+        <div class="repo">github.com/&lt;handle&gt;/<a href="#">notebooks</a></div>
+        <p>A loose collection of small numerical experiments: integrators, finite-difference solvers, and reproductions of textbook problems from plasma physics and CAE. Useful when I want to remember <em>why</em> a method works.</p>
+        <div class="meta-tags">
+          <span>python</span><span>jupyter</span><span>numpy</span><span>writeups</span>
+        </div>
+      </div>
+      <div class="schematic">
+        <div class="cap">// example: damped oscillator</div>
+        <svg viewBox="0 0 280 130" preserveAspectRatio="none">
+          <g stroke="oklch(0.85 0.01 250)" strokeWidth="0.5">
+            <line x1="0" y1="65" x2="280" y2="65"/>
+            <line x1="20" y1="10" x2="20" y2="120"/>
+          </g>
+          <path
+            d={"M 20 65 " + Array.from({length: 100}).map((_,i)=>{
+              const x = 20 + i*2.5; const y = 65 - Math.sin(i*0.4) * 38 * Math.exp(-i*0.025);
+              return `L ${x.toFixed(1)} ${y.toFixed(1)}`;
+            }).join(" ")}
+            fill="none" stroke="oklch(0.50 0.10 250)" strokeWidth="1.2"
+          />
+        </svg>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head">
+    <div class="label">03 / now</div>
+    <h2>Currently on my desk.</h2>
+  </div>
+  <div class="now">
+    <div>
+      <h4>// changelog</h4>
+      <ul>
+        <li><time>2026-04</time><span>Setting up CI for the PICLas Windows build chain.</span></li>
+        <li><time>2026-03</time><span>Repository scaffolding and CMake toolchain notes.</span></li>
+        <li><time>2026-02</time><span>Page goes live — workshop opens.</span></li>
+      </ul>
+    </div>
+    <div>
+      <h4>// stack</h4>
+      <ul>
+        <li><time>compute</time><span>Fortran 2008, C++17, MPI, OpenMP</span></li>
+        <li><time>tooling</time><span>CMake, Ninja, MSVC, gfortran</span></li>
+        <li><time>analysis</time><span>Python, NumPy, ParaView, matplotlib</span></li>
+        <li><time>writing</time><span>LaTeX, Typst, Markdown</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <span>← <a href="index.html" style="color: var(--ink-soft); text-decoration: none;">back to shelf</a></span>
+  <span>physics · 2026</span>
+</footer>
+</body>
+</html>

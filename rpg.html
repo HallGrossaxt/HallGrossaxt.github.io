@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Fantasy & Roleplaying — Folio II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=UnifrakturMaguntia&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --parchment: oklch(0.92 0.03 80);
+  --parchment-2: oklch(0.88 0.04 75);
+  --parchment-3: oklch(0.83 0.05 70);
+  --vellum-ink: oklch(0.22 0.03 35);
+  --ink-soft: oklch(0.32 0.04 35);
+  --ink-faint: oklch(0.45 0.04 40);
+  --gold: oklch(0.62 0.10 75);
+  --gold-deep: oklch(0.52 0.10 65);
+  --rubric: oklch(0.42 0.14 25);
+  --rule: oklch(0.55 0.06 50 / 0.4);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+  color: var(--vellum-ink);
+  background:
+    radial-gradient(ellipse at 20% 10%, oklch(0.95 0.02 80) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 90%, oklch(0.86 0.05 65) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 50%, oklch(0.90 0.035 75) 0%, transparent 70%),
+    var(--parchment);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+}
+/* parchment grain */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle at 20% 30%, oklch(0.65 0.06 50 / 0.18) 0, transparent 2px),
+    radial-gradient(circle at 70% 60%, oklch(0.60 0.07 45 / 0.12) 0, transparent 2px),
+    radial-gradient(circle at 40% 80%, oklch(0.55 0.07 40 / 0.10) 0, transparent 3px),
+    radial-gradient(circle at 85% 25%, oklch(0.70 0.05 60 / 0.14) 0, transparent 2px);
+  background-size: 6px 6px, 11px 11px, 5px 5px, 9px 9px;
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+  z-index: 0;
+}
+body::after {
+  content: "";
+  position: fixed; inset: 0; pointer-events: none;
+  box-shadow: inset 0 0 200px oklch(0.4 0.1 35 / 0.25);
+  z-index: 1;
+}
+
+main, header, footer { position: relative; z-index: 2; }
+
+/* topbar */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 56px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  border-bottom: 1px solid var(--rule);
+}
+.topbar a { color: var(--ink-soft); text-decoration: none; }
+.topbar a:hover { color: var(--rubric); }
+.topbar .sep { color: var(--gold); margin: 0 10px; }
+
+/* hero / illuminated opening */
+.hero {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 56px 40px;
+  position: relative;
+}
+.hero .salutation {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--rubric);
+  letter-spacing: 0.03em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+.hero .salutation::before, .hero .salutation::after {
+  content: "✦";
+  color: var(--gold);
+  margin: 0 14px;
+  font-style: normal;
+}
+.hero h1 {
+  font-family: "UnifrakturMaguntia", "Cormorant Garamond", serif;
+  font-weight: 400;
+  font-size: clamp(56px, 8vw, 110px);
+  line-height: 0.95;
+  text-align: center;
+  margin: 0 0 8px;
+  color: var(--vellum-ink);
+  letter-spacing: 0;
+}
+.hero h1 .rubric { color: var(--rubric); }
+.hero .subtitle {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 22px;
+  text-align: center;
+  color: var(--ink-soft);
+  margin: 14px 0 36px;
+}
+.hero .ornament {
+  text-align: center; color: var(--gold); font-size: 22px;
+  letter-spacing: 0.6em;
+  margin: 28px 0 40px;
+}
+
+/* illuminated drop-cap paragraph */
+.opening {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 21px;
+  line-height: 1.6;
+  color: var(--vellum-ink);
+  text-align: justify;
+  hyphens: auto;
+}
+.opening::first-letter {
+  font-family: "UnifrakturMaguntia", serif;
+  font-size: 96px;
+  float: left;
+  line-height: 0.85;
+  margin: 6px 14px -4px 0;
+  color: var(--rubric);
+  text-shadow: 1px 1px 0 oklch(0.7 0.1 60 / 0.4);
+}
+.opening em { color: var(--rubric); font-style: italic; }
+
+/* section heading */
+.folio-divider {
+  max-width: 900px;
+  margin: 80px auto 40px;
+  text-align: center;
+  position: relative;
+}
+.folio-divider::before, .folio-divider::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 30%;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+.folio-divider::before { left: 0; }
+.folio-divider::after { right: 0; }
+.folio-divider span {
+  font-family: "UnifrakturMaguntia", serif;
+  font-size: 28px;
+  color: var(--rubric);
+  background: transparent;
+  padding: 0 24px;
+  letter-spacing: 0.04em;
+}
+
+/* projects as parchment cards */
+.codex {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 56px 80px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  padding: 40px 0;
+  border-top: 1px solid var(--rule);
+  position: relative;
+}
+.entry:first-child { border-top: 0; padding-top: 0; }
+@media (max-width: 800px) {
+  .entry { grid-template-columns: 1fr; gap: 24px; }
+}
+
+.entry .seal {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--gold-deep);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.entry .folio-num {
+  font-family: "UnifrakturMaguntia", serif;
+  font-size: 36px;
+  color: var(--rubric);
+  margin-bottom: 14px;
+  line-height: 1;
+}
+.entry .repo {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+}
+.entry .repo a { color: var(--ink-soft); border-bottom: 1px dotted var(--gold); text-decoration: none; }
+.entry .repo a:hover { color: var(--rubric); }
+
+.entry h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.1;
+  margin: 0 0 14px;
+  color: var(--vellum-ink);
+  letter-spacing: -0.005em;
+}
+.entry h3 em { color: var(--rubric); font-weight: 400; }
+
+.entry p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--ink-soft);
+  margin: 0 0 18px;
+  max-width: 60ch;
+  text-wrap: pretty;
+}
+.entry .qualities {
+  display: flex; flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dotted var(--rule);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 15px;
+  color: var(--ink-soft);
+}
+.entry .qualities span { font-style: italic; }
+.entry .qualities span::before { content: "✦  "; color: var(--gold); font-style: normal; }
+
+/* status badge */
+.scribe-mark {
+  display: inline-block;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--rubric);
+  border: 1px solid var(--gold);
+  padding: 4px 14px;
+  border-radius: 999px;
+  margin-bottom: 14px;
+  background: oklch(0.95 0.02 75 / 0.6);
+}
+.scribe-mark.shelved {
+  color: var(--ink-faint);
+  border-color: var(--rule);
+}
+
+/* Vow / now panel */
+.vow {
+  max-width: 900px;
+  margin: 0 auto 80px;
+  padding: 40px 56px;
+  border-top: 1px solid var(--gold);
+  border-bottom: 1px solid var(--gold);
+  text-align: center;
+  position: relative;
+}
+.vow::before, .vow::after {
+  content: "❦";
+  position: absolute; left: 50%; transform: translateX(-50%);
+  color: var(--gold); font-size: 18px;
+  background: var(--parchment);
+  padding: 0 12px;
+}
+.vow::before { top: -10px; }
+.vow::after { bottom: -10px; }
+.vow h4 {
+  font-family: "UnifrakturMaguntia", serif;
+  font-size: 28px;
+  color: var(--rubric);
+  margin: 0 0 14px;
+  font-weight: 400;
+}
+.vow p {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin: 0 auto;
+  max-width: 56ch;
+}
+
+/* footer */
+.footer {
+  text-align: center;
+  padding: 32px 56px 56px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-faint);
+  border-top: 1px solid var(--rule);
+}
+.footer a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px dotted var(--gold); }
+
+/* corner filigree on hero */
+.filigree-corner {
+  position: absolute;
+  width: 120px; height: 120px;
+  color: var(--gold);
+  opacity: 0.6;
+}
+.filigree-corner.tl { top: 16px; left: 16px; }
+.filigree-corner.tr { top: 16px; right: 16px; transform: scaleX(-1); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div>
+    <a href="index.html">← the shelf</a>
+    <span class="sep">✦</span>
+    <span style="color: var(--rubric);">folio ii · fantasy &amp; roleplaying</span>
+  </div>
+  <div>
+    <a href="physics.html">to the laboratory →</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <svg class="filigree-corner tl" viewBox="0 0 100 100" aria-hidden>
+    <g fill="none" stroke="currentColor" strokeWidth="0.8">
+      <path d="M 5 50 Q 5 5 50 5"/>
+      <path d="M 15 50 Q 15 15 50 15"/>
+      <circle cx="50" cy="5" r="2.5" fill="currentColor"/>
+      <circle cx="5" cy="50" r="2.5" fill="currentColor"/>
+      <path d="M 25 25 Q 35 18 45 25 Q 38 35 25 25 Z" fill="currentColor" opacity="0.5"/>
+    </g>
+  </svg>
+  <svg class="filigree-corner tr" viewBox="0 0 100 100" aria-hidden>
+    <g fill="none" stroke="currentColor" strokeWidth="0.8">
+      <path d="M 5 50 Q 5 5 50 5"/>
+      <path d="M 15 50 Q 15 15 50 15"/>
+      <circle cx="50" cy="5" r="2.5" fill="currentColor"/>
+      <circle cx="5" cy="50" r="2.5" fill="currentColor"/>
+      <path d="M 25 25 Q 35 18 45 25 Q 38 35 25 25 Z" fill="currentColor" opacity="0.5"/>
+    </g>
+  </svg>
+
+  <div class="salutation">~ Folio the Second · being a small library for tabletop play ~</div>
+
+  <h1><span class="rubric">O</span>f Dice <em style="font-style: italic; color: var(--ink-soft); font-family: 'Cormorant Garamond', serif;">&amp;</em> Heroes</h1>
+  <div class="subtitle">A workshop for fantasy roleplaying tools, kept beside the laboratory.</div>
+
+  <div class="ornament">❦   ✦   ❦</div>
+
+  <p class="opening">
+    <em>Herein</em> lie the works concerning matters fantastical — small tools for the gaming table, written in the hours when the laboratory grows quiet. The first volume in this folio shall be a <em>character generator and manager for Midgard 5</em>; further entries are promised as time and inspiration permit. All works are kept in earnest, polished slowly, and offered freely upon completion.
+  </p>
+</section>
+
+<div class="folio-divider"><span>The Codex</span></div>
+
+<section class="codex">
+
+  <article class="entry">
+    <div>
+      <div class="seal">✦ Entry the First</div>
+      <div class="folio-num">I.</div>
+      <div class="scribe-mark">in the scriptorium</div>
+      <div class="repo">github.com/&lt;handle&gt;/<a href="#">midgard-5-tome</a></div>
+    </div>
+    <div>
+      <h3><em>The Midgard Tome</em><br/>— a character generator &amp; manager —</h3>
+      <p>
+        A digital companion for players of <em>Midgard 5</em>: rolling new heroes, tracking their fates across campaigns, and managing the small mountain of inventory, spells, and abilities that any worthy adventurer accrues. Intended to be useful at the table, kind on the eyes, and faithful to the rulebook.
+      </p>
+      <div class="qualities">
+        <span>character creation</span>
+        <span>session tracking</span>
+        <span>printable sheets</span>
+        <span>local-first</span>
+      </div>
+    </div>
+  </article>
+
+  <article class="entry">
+    <div>
+      <div class="seal">✦ Entry the Second</div>
+      <div class="folio-num">II.</div>
+      <div class="scribe-mark shelved">awaiting the muse</div>
+      <div class="repo">to be inscribed…</div>
+    </div>
+    <div>
+      <h3><em>Further Volumes</em><br/>— yet to be written —</h3>
+      <p>
+        Should the first tome be received well, further companions may follow: random-table generators for the harried Spielleiter, encounter ledgers, and perhaps small utilities for the roving party. Suggestions are welcomed as ravens are welcomed at a window.
+      </p>
+      <div class="qualities">
+        <span>tables &amp; oracles</span>
+        <span>session prep</span>
+        <span>the unknown</span>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<section class="vow">
+  <h4>A Modest Vow</h4>
+  <p>
+    These works are wrought in earnest and at leisure. They are not promised by any date, and shall be released only when fit to be seen. Patience, gentle reader, is itself a kind of magic.
+  </p>
+</section>
+</main>
+
+<footer class="footer">
+  <a href="index.html">← return to the shelf</a> &nbsp;·&nbsp; folio ii &nbsp;·&nbsp; anno mmxxvi
+</footer>
+
+</body>
+</html>

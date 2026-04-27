@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GitHub — Two Workshops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<style>
+:root {
+  --ink: oklch(0.18 0.01 250);
+  --ink-soft: oklch(0.32 0.01 250);
+  --paper: oklch(0.985 0.003 250);
+  --rule: oklch(0.88 0.01 250);
+  --accent-cool: oklch(0.55 0.08 250);
+
+  --parchment: oklch(0.93 0.025 80);
+  --parchment-deep: oklch(0.86 0.04 75);
+  --vellum-ink: oklch(0.22 0.03 35);
+  --gold: oklch(0.62 0.10 75);
+  --rubric: oklch(0.45 0.13 25);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------------- shell ---------------- */
+.shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.topbar {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 22px 40px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper);
+  font-size: 13px;
+}
+.topbar .mark {
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.topbar .meta {
+  font-family: "JetBrains Mono", monospace;
+  color: var(--ink-soft);
+  display: flex;
+  gap: 24px;
+}
+.topbar .meta a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+}
+.topbar .meta a:hover { border-bottom-color: var(--ink-soft); }
+
+.footer {
+  padding: 18px 40px;
+  border-top: 1px solid var(--rule);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  color: var(--ink-soft);
+  display: flex;
+  justify-content: space-between;
+  letter-spacing: 0.02em;
+}
+
+/* ---------------- intro band ---------------- */
+.intro {
+  padding: 72px 40px 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+}
+.intro .eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+}
+.intro h1 {
+  font-size: clamp(38px, 5vw, 64px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-weight: 500;
+  margin: 0 0 18px;
+  max-width: 16ch;
+  text-wrap: balance;
+}
+.intro h1 em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--ink-soft);
+}
+.intro p.lede {
+  font-size: 17px;
+  line-height: 1.55;
+  max-width: 56ch;
+  color: var(--ink-soft);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ---------------- split ---------------- */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--rule);
+  min-height: 560px;
+}
+@media (max-width: 880px) {
+  .split { grid-template-columns: 1fr; }
+}
+
+.panel {
+  position: relative;
+  padding: 56px 48px 64px;
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  transition: background-color 0.4s ease;
+}
+.panel + .panel { border-left: 1px solid var(--rule); }
+@media (max-width: 880px) {
+  .panel + .panel { border-left: 0; border-top: 1px solid var(--rule); }
+}
+
+/* physics panel */
+.panel.physics {
+  background: var(--paper);
+}
+.panel.physics:hover {
+  background: oklch(0.965 0.005 250);
+}
+.panel.physics .index {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--ink-soft);
+}
+.panel.physics .title {
+  font-family: "Inter", sans-serif;
+  font-size: clamp(34px, 3.4vw, 48px);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  margin: 28px 0 14px;
+  max-width: 14ch;
+}
+.panel.physics .desc {
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 42ch;
+  margin: 0 0 28px;
+}
+.panel.physics .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 36px;
+}
+.panel.physics .tags span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  padding: 4px 9px;
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  border-radius: 2px;
+}
+
+/* physics decoration: technical grid + vector field */
+.physics-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.physics-deco svg { width: 100%; height: 100%; }
+
+.panel.physics .cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-top: 1px solid var(--ink);
+  padding-top: 12px;
+  width: fit-content;
+}
+.panel.physics .cta .arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+.panel.physics:hover .cta .arrow { transform: translateX(6px); }
+
+/* rpg panel */
+.panel.rpg {
+  background:
+    radial-gradient(ellipse at 30% 20%, oklch(0.95 0.025 80) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, oklch(0.88 0.04 70) 0%, transparent 65%),
+    var(--parchment);
+  color: var(--vellum-ink);
+}
+/* parchment grain */
+.panel.rpg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, oklch(0.78 0.05 60 / 0.18) 0, transparent 2px),
+    radial-gradient(circle at 70% 60%, oklch(0.76 0.06 55 / 0.14) 0, transparent 2px),
+    radial-gradient(circle at 40% 80%, oklch(0.72 0.06 50 / 0.12) 0, transparent 3px);
+  background-size: 7px 7px, 11px 11px, 5px 5px;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.7;
+}
+.panel.rpg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 120px oklch(0.55 0.08 45 / 0.18);
+  pointer-events: none;
+}
+.panel.rpg:hover {
+  background:
+    radial-gradient(ellipse at 30% 20%, oklch(0.95 0.025 80) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, oklch(0.86 0.05 65) 0%, transparent 65%),
+    var(--parchment);
+}
+
+.panel.rpg .index {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--rubric);
+  letter-spacing: 0.04em;
+  position: relative;
+}
+.panel.rpg .title {
+  font-family: "UnifrakturMaguntia", "Cormorant Garamond", serif;
+  font-size: clamp(44px, 4.4vw, 64px);
+  font-weight: 400;
+  line-height: 1;
+  margin: 22px 0 18px;
+  color: var(--vellum-ink);
+  position: relative;
+}
+.panel.rpg .title .dropcap {
+  color: var(--rubric);
+}
+.panel.rpg .desc {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 19px;
+  line-height: 1.5;
+  max-width: 38ch;
+  margin: 0 0 28px;
+  color: oklch(0.28 0.03 35);
+  position: relative;
+}
+.panel.rpg .desc em { color: var(--rubric); font-style: italic; }
+.panel.rpg .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 36px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 14px;
+  color: oklch(0.38 0.04 35);
+  position: relative;
+}
+.panel.rpg .tags span::before { content: "✦  "; color: var(--gold); }
+
+.panel.rpg .cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--rubric);
+  border-top: 1px solid oklch(0.55 0.08 45 / 0.4);
+  padding-top: 12px;
+  width: fit-content;
+  position: relative;
+}
+.panel.rpg .cta .arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+  font-family: serif;
+}
+.panel.rpg:hover .cta .arrow { transform: translateX(6px); }
+
+/* rpg decoration: filigree corner */
+.rpg-deco {
+  position: absolute;
+  pointer-events: none;
+  color: var(--gold);
+  opacity: 0.55;
+}
+.rpg-deco.tr { top: 28px; right: 28px; width: 110px; height: 110px; }
+.rpg-deco.bl { bottom: 28px; left: 28px; width: 80px; height: 80px; transform: rotate(180deg); }
+
+/* tweaks button helper area */
+#tweaks-root { position: relative; z-index: 1000; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "displayName": "A. Lopp",
+  "tagline": "Physicist by training, CAE engineer by trade. This is the workshop where I keep my private code — two distinct crafts under one roof.",
+  "showAbout": true,
+  "physicsTitle": "Plasma, simulation & engineering",
+  "physicsDesc": "Numerical work, scientific computing and tools around computational physics. Currently preparing an unofficial Windows port of PICLas.",
+  "rpgTitle": "Fantasy & roleplaying",
+  "rpgDesc": "Tools for the tabletop — beginning with a character generator and manager for Midgard 5.",
+  "showFiligree": true,
+  "showPhysicsGrid": true
+}/*EDITMODE-END*/;
+
+function PhysicsDeco() {
+  // technical grid + vector arrows
+  return (
+    <div className="physics-deco" aria-hidden>
+      <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <pattern id="grid-fine" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="oklch(0.85 0.01 250)" strokeWidth="0.5"/>
+          </pattern>
+          <pattern id="grid-coarse" width="100" height="100" patternUnits="userSpaceOnUse">
+            <path d="M 100 0 L 0 0 0 100" fill="none" stroke="oklch(0.78 0.015 250)" strokeWidth="0.6"/>
+          </pattern>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="oklch(0.55 0.08 250)"/>
+          </marker>
+        </defs>
+        <rect width="600" height="600" fill="url(#grid-fine)"/>
+        <rect width="600" height="600" fill="url(#grid-coarse)"/>
+
+        {/* axes */}
+        <g stroke="oklch(0.55 0.08 250)" strokeWidth="1" opacity="0.6">
+          <line x1="60" y1="540" x2="540" y2="540" markerEnd="url(#arrow)"/>
+          <line x1="60" y1="540" x2="60" y2="60" markerEnd="url(#arrow)"/>
+        </g>
+
+        {/* a few field-line vectors */}
+        <g stroke="oklch(0.55 0.08 250)" strokeWidth="1" opacity="0.55" fill="none" markerEnd="url(#arrow)">
+          {Array.from({length: 5}).map((_, i) => {
+            const y = 120 + i * 70;
+            const amp = 18 + i * 4;
+            return <line key={i} x1={120} y1={y} x2={120 + amp*3} y2={y - amp/2}/>;
+          })}
+        </g>
+
+        {/* sinusoidal trace */}
+        <path
+          d={`M 60 360 ${Array.from({length: 60}).map((_, i) => {
+            const x = 60 + i * 8;
+            const y = 360 - Math.sin(i * 0.35) * 60 * Math.exp(-i * 0.015);
+            return `L ${x.toFixed(1)} ${y.toFixed(1)}`;
+          }).join(" ")}`}
+          fill="none"
+          stroke="oklch(0.45 0.12 250)"
+          strokeWidth="1.2"
+          opacity="0.7"
+        />
+
+        {/* tick marks on x */}
+        <g stroke="oklch(0.55 0.08 250)" strokeWidth="0.8" opacity="0.4">
+          {Array.from({length: 8}).map((_, i) => (
+            <line key={i} x1={120 + i*60} y1={540} x2={120 + i*60} y2={546}/>
+          ))}
+        </g>
+      </svg>
+    </div>
+  );
+}
+
+function Filigree({ className }) {
+  return (
+    <svg className={`rpg-deco ${className}`} viewBox="0 0 100 100" aria-hidden>
+      <g fill="none" stroke="currentColor" strokeWidth="0.8">
+        <path d="M 5 50 Q 5 5 50 5"/>
+        <path d="M 15 50 Q 15 15 50 15"/>
+        <circle cx="50" cy="5" r="2.5" fill="currentColor"/>
+        <circle cx="5" cy="50" r="2.5" fill="currentColor"/>
+        <path d="M 25 25 Q 35 18 45 25 Q 38 35 25 25 Z" fill="currentColor" opacity="0.5"/>
+        <path d="M 50 5 L 60 12 M 50 5 L 50 -3"/>
+        <path d="M 5 50 L 12 60 M 5 50 L -3 50"/>
+        <path d="M 22 8 q 6 4 0 8 q -6 -4 0 -8 z" fill="currentColor" opacity="0.4"/>
+        <path d="M 8 22 q 4 6 8 0 q -4 -6 -8 0 z" fill="currentColor" opacity="0.4"/>
+      </g>
+    </svg>
+  );
+}
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAKS_DEFAULTS);
+
+  return (
+    <div className="shell">
+      <header className="topbar">
+        <div className="mark">~/{t.displayName.toLowerCase().replace(/[^a-z0-9]/g, "-")}/github</div>
+        <div className="meta">
+          <span>April 2026</span>
+          <a href="#about">about</a>
+          <a href="https://github.com/" target="_blank" rel="noreferrer">github ↗</a>
+        </div>
+      </header>
+
+      <main>
+        <section className="intro" id="about">
+          <div className="eyebrow">Personal · Two workshops, one shelf</div>
+          <h1>
+            {t.displayName}<em>.</em><br/>A small workshop for code outside of work hours.
+          </h1>
+          <p className="lede">{t.tagline}</p>
+        </section>
+
+        <section className="split">
+          <a className="panel physics" href="physics.html">
+            {t.showPhysicsGrid && <PhysicsDeco />}
+            <div style={{position: "relative"}}>
+              <div className="index">01 · /physics</div>
+              <h2 className="title">{t.physicsTitle}</h2>
+              <p className="desc">{t.physicsDesc}</p>
+              <div className="tags">
+                <span>plasma</span><span>PIC</span><span>fortran</span><span>windows-port</span><span>GPU</span>
+              </div>
+            </div>
+            <div className="cta" style={{position: "relative"}}>
+              Enter the lab <span className="arrow">→</span>
+            </div>
+          </a>
+
+          <a className="panel rpg" href="rpg.html">
+            {t.showFiligree && <Filigree className="tr"/>}
+            {t.showFiligree && <Filigree className="bl"/>}
+            <div style={{position: "relative"}}>
+              <div className="index">~ Folio II ~</div>
+              <h2 className="title"><span className="dropcap">F</span>antasy <em>&amp;</em> Roleplaying</h2>
+              <p className="desc">{t.rpgDesc}</p>
+              <div className="tags">
+                <span style={{whiteSpace: "nowrap"}}>Midgard&nbsp;5</span><span>character generator</span><span>tabletop tools</span>
+              </div>
+            </div>
+            <div className="cta" style={{position: "relative"}}>
+              Open the codex <span className="arrow">❧</span>
+            </div>
+          </a>
+        </section>
+      </main>
+
+      <footer className="footer">
+        <span>© {t.displayName} · 2026</span>
+        <span>two crafts · one shelf · built with care</span>
+      </footer>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection title="Identity">
+          <TweakText label="Display name" value={t.displayName} onChange={v => setTweak("displayName", v)} />
+          <TweakText label="Tagline" value={t.tagline} onChange={v => setTweak("tagline", v)} multiline />
+        </TweakSection>
+        <TweakSection title="Physics panel">
+          <TweakText label="Title" value={t.physicsTitle} onChange={v => setTweak("physicsTitle", v)} />
+          <TweakText label="Description" value={t.physicsDesc} onChange={v => setTweak("physicsDesc", v)} multiline />
+          <TweakToggle label="Technical grid background" value={t.showPhysicsGrid} onChange={v => setTweak("showPhysicsGrid", v)} />
+        </TweakSection>
+        <TweakSection title="RPG panel">
+          <TweakText label="Title" value={t.rpgTitle} onChange={v => setTweak("rpgTitle", v)} />
+          <TweakText label="Description" value={t.rpgDesc} onChange={v => setTweak("rpgDesc", v)} multiline />
+          <TweakToggle label="Filigree corners" value={t.showFiligree} onChange={v => setTweak("showFiligree", v)} />
+        </TweakSection>
+      </TweaksPanel>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>

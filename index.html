@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HallGrossaxt — Scientific Computing on Windows</title>
+  <meta name="description" content="Native Windows ports of the PICLas plasma & rarefied-gas simulation toolchain — solver, mesh generator and regression framework." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Scientific computing · plasma &amp; rarefied-gas simulation</p>
+      <h1>Hi, I'm <span class="accent">Andreas</span>.</h1>
+      <p class="lead">
+        I am a physicist with a passion for computer simulations.
+      </p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#projects">View projects</a>
+        <a class="btn" href="https://github.com/HallGrossaxt" target="_blank" rel="noopener">GitHub profile ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="about" id="about">
+      <h2>A Passion Project for Fun</h2>
+      <p>
+        <a href="https://piclas.boltzplatz.eu" target="_blank" rel="noopener">PICLas</a>
+        is an open-source framework for kinetic plasma and rarefied gas flows, combining
+        Particle-in-Cell (PIC) and Direct Simulation Monte Carlo (DSMC) methods. Like most
+        HPC codes, it is built for Linux clusters.
+      </p>
+      <p>
+        My focus is making that whole toolchain <strong>first-class on Windows</strong>:
+        portable MSYS2&nbsp;/&nbsp;UCRT64 (GCC) builds with MS-MPI and optional CUDA/GPU support,
+        self-contained release bundles that run on a clean machine, and a regression-tested
+        port of the supporting tools — the mesh generator and the test framework. The goal is
+        simple: lower the barrier to running serious simulation work without leaving Windows.
+      </p>
+    </section>
+
+    <section class="projects" id="projects">
+      <h2>Public projects</h2>
+      <div class="grid">
+
+        <a class="card" href="https://github.com/HallGrossaxt/piclas-windows" target="_blank" rel="noopener">
+          <div class="card-head">
+            <h3>piclas-windows</h3>
+            <span class="lang"><span class="dot fortran"></span>Fortran</span>
+          </div>
+          <p>Unofficial Windows port of <strong>PICLas</strong> — the PIC/DSMC solver. Portable,
+             self-contained x64 release bundles (solver, post-processor, field tools) plus a
+             ready-to-run DSMC example.</p>
+          <span class="card-link">github.com/HallGrossaxt/piclas-windows →</span>
+        </a>
+
+        <a class="card" href="https://github.com/HallGrossaxt/hopr-win" target="_blank" rel="noopener">
+          <div class="card-head">
+            <h3>hopr-win</h3>
+            <span class="lang"><span class="dot fortran"></span>Fortran</span>
+          </div>
+          <p>Windows port of <strong>HOPR</strong>, the high-order mesh generator used to build
+             PICLas meshes (CGNS / Gmsh input → HDF5). MSYS2 UCRT64 / GCC / Windows&nbsp;11.</p>
+          <span class="card-link">github.com/HallGrossaxt/hopr-win →</span>
+        </a>
+
+        <a class="card" href="https://github.com/HallGrossaxt/reggie2.0-win" target="_blank" rel="noopener">
+          <div class="card-head">
+            <h3>reggie2.0-win</h3>
+            <span class="lang"><span class="dot python"></span>Python</span>
+          </div>
+          <p>Windows port of the <strong>reggie2.0</strong> regression-testing framework that
+             keeps the ported solver and tools verified against reference results.</p>
+          <span class="card-link">github.com/HallGrossaxt/reggie2.0-win →</span>
+        </a>
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <p>
+        <a href="https://github.com/HallGrossaxt" target="_blank" rel="noopener">GitHub</a>
+        · Built with plain HTML/CSS, hosted on GitHub&nbsp;Pages.
+      </p>
+      <p class="muted">© <span id="year"></span> HallGrossaxt</p>
+    </div>
+  </footer>
+
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
